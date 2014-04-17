@@ -1,20 +1,21 @@
 <?php
-namespace Sum\Oauth2\Server;
+namespace Sum\Oauth2\Server\Storage\Pdo\Mysql;
 
 use League\OAuth2\Server\Storage\SessionInterface;
 use Phalcon\Db\Adapter\Pdo;
 use Phalcon\Db;
 
-class Session implements SessionInterface{
+class Session implements SessionInterface
+{
 
     protected $db;
     protected $tables = array(
-        'oauth_sessions' => 'oauth_sessions',
-        'oauth_session_authcodes' => 'oauth_session_authcodes',
-        'oauth_session_redirects' => 'oauth_session_redirects',
-        'oauth_session_access_tokens' => 'oauth_session_access_tokens',
-        'oauth_session_refresh_tokens' => 'oauth_session_refresh_tokens',
-        'oauth_session_token_scopes' => 'oauth_session_token_scopes',
+        'oauth_sessions'                => 'oauth_sessions',
+        'oauth_session_authcodes'       => 'oauth_session_authcodes',
+        'oauth_session_redirects'       => 'oauth_session_redirects',
+        'oauth_session_access_tokens'   => 'oauth_session_access_tokens',
+        'oauth_session_refresh_tokens'  => 'oauth_session_refresh_tokens',
+        'oauth_session_token_scopes'    => 'oauth_session_token_scopes',
         'oauth_session_authcode_scopes' => 'oauth_session_authcode_scopes'
     );
 
@@ -47,7 +48,7 @@ class Session implements SessionInterface{
         return $this->db->insert(
             $this->tables['oauth_sessions'],
             [$clientId, $ownerType, $ownerId],
-            ['client_id', 'owner_type','owner_id']
+            ['client_id', 'owner_type', 'owner_id']
         );
     }
 
@@ -242,7 +243,7 @@ class Session implements SessionInterface{
         if (!empty($row)) {
             return $row;
         }
-        return false;
+        return FALSE;
     }
 
     /**
@@ -273,15 +274,15 @@ class Session implements SessionInterface{
     public function validateAccessToken($accessToken)
     {
         $row = $this->db->fetchOne(
-          'SELECT session_id, oauth_sessions.client_id, oauth_sessions.owner_id, oauth_sessions.owner_type
-            FROM oauth_session_access_tokens JOIN oauth_sessions ON oauth_sessions.id = session_id WHERE
-            access_token = :accessToken AND access_token_expires >= UNIX_TIMESTAMP(NOW())',
+            'SELECT session_id, oauth_sessions.client_id, oauth_sessions.owner_id, oauth_sessions.owner_type
+              FROM oauth_session_access_tokens JOIN oauth_sessions ON oauth_sessions.id = session_id WHERE
+              access_token = :accessToken AND access_token_expires >= UNIX_TIMESTAMP(NOW())',
             Db::FETCH_ASSOC,
             ['accessToken' => $accessToken]
         );
-        if(!empty($row))
-            return $row;
-        return false;
+        if (empty($row))
+            return FALSE;
+        return $row;
     }
 
     /**
@@ -328,9 +329,9 @@ class Session implements SessionInterface{
             ['refreshToken' => $refreshToken, 'clientId' => $clientId]
         );
 
-        if(! empty($row))
+        if (!empty($row))
             return $row['session_access_token_id'];
-        return false;
+        return FALSE;
     }
 
     /**
@@ -384,7 +385,7 @@ class Session implements SessionInterface{
         $this->db->insert(
             $this->tables['oauth_session_authcode_scopes'],
             [$authCodeId, $scopeId],
-            ['oauth_session_authcode_id','scope_id']
+            ['oauth_session_authcode_id', 'scope_id']
         );
     }
 
@@ -478,10 +479,10 @@ class Session implements SessionInterface{
     public function getScopes($accessToken)
     {
         return $this->db->fetchAll(
-          'SELECT oauth_scopes.* FROM oauth_session_token_scopes JOIN oauth_session_access_tokens
-          ON oauth_session_access_tokens.id = oauth_session_token_scopes.session_access_token_id
-          JOIN oauth_scopes ON oauth_scopes.id = oauth_session_token_scopes.scope_id
-          WHERE access_token = :accessToken',
+            'SELECT oauth_scopes.* FROM oauth_session_token_scopes JOIN oauth_session_access_tokens
+            ON oauth_session_access_tokens.id = oauth_session_token_scopes.session_access_token_id
+            JOIN oauth_scopes ON oauth_scopes.id = oauth_session_token_scopes.scope_id
+            WHERE access_token = :accessToken',
             Db::FETCH_ASSOC,
             ['accessToken' => $accessToken]
         );

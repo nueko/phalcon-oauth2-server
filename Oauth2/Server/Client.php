@@ -1,15 +1,16 @@
 <?php
-namespace Sum\Oauth2\Server;
+namespace Sum\Oauth2\Server\Storage\Pdo\Mysql;
 
 use League\OAuth2\Server\Storage\ClientInterface;
 use Phalcon\Db;
 use Phalcon\Mvc\Model\Resultset;
 
-class Client implements ClientInterface {
+class Client implements ClientInterface
+{
 
     protected $db;
     protected $tables = [
-        'oauth_clients' => 'oauth_clients',
+        'oauth_clients'          => 'oauth_clients',
         'oauth_client_endpoints' => 'oauth_client_endpoints',
     ];
 
@@ -20,7 +21,7 @@ class Client implements ClientInterface {
     public function __construct($db, $tables = array())
     {
         $this->db = $db;
-        if($tables)
+        if ($tables)
             foreach ($tables as $key => $table) {
                 $this->tables[$key] = $table;
             }
@@ -70,7 +71,7 @@ class Client implements ClientInterface {
      * @param  string $grantType The grant type used in the request (default = "null")
      * @return bool|array               Returns false if the validation fails, array on success
      */
-    public function getClient($clientId, $clientSecret = null, $redirectUri = null, $grantType = null)
+    public function getClient($clientId, $clientSecret = NULL, $redirectUri = NULL, $grantType = NULL)
     {
         if ($clientSecret AND $redirectUri) {
             $row = $this->db->fetchOne(
@@ -107,8 +108,8 @@ class Client implements ClientInterface {
                 ['clientId' => $clientId]
             );
         }
-        if(empty($row))
-            return false;
+        if (empty($row))
+            return FALSE;
         return $row;
     }
 }

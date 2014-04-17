@@ -1,13 +1,14 @@
 <?php
-namespace Sum\Oauth2\Server;
+namespace Sum\Oauth2\Server\Storage\Pdo\Mysql;
 
 use League\OAuth2\Server\Storage\ScopeInterface;
 use Phalcon\Db;
 
-class Scope implements ScopeInterface {
+class Scope implements ScopeInterface
+{
     protected $db;
     protected $tables = [
-        'oauth_clients' => 'oauth_clients',
+        'oauth_clients'          => 'oauth_clients',
         'oauth_client_endpoints' => 'oauth_client_endpoints',
     ];
 
@@ -18,7 +19,7 @@ class Scope implements ScopeInterface {
     public function __construct($db, $tables = array())
     {
         $this->db = $db;
-        if($tables)
+        if ($tables)
             foreach ($tables as $key => $table) {
                 $this->tables[$key] = $table;
             }
@@ -50,7 +51,7 @@ class Scope implements ScopeInterface {
      * @param  string $grantType The grant type used in the request (default = "null")
      * @return bool|array If the scope doesn't exist return false
      */
-    public function getScope($scope, $clientId = null, $grantType = null)
+    public function getScope($scope, $clientId = NULL, $grantType = NULL)
     {
         $row = $this->db->fetchOne(
             'SELECT * FROM oauth_scopes WHERE scope = :scope',
@@ -58,8 +59,8 @@ class Scope implements ScopeInterface {
             ['scope' => $scope]
         );
 
-        if(empty($row))
-            return false;
+        if (empty($row))
+            return FALSE;
         return $row;
     }
 }
