@@ -45,11 +45,12 @@ class Session implements SessionInterface
      */
     public function createSession($clientId, $ownerType, $ownerId)
     {
-        return $this->db->insert(
+        $this->db->insert(
             $this->tables['oauth_sessions'],
             [$clientId, $ownerType, $ownerId],
             ['client_id', 'owner_type', 'owner_id']
         );
+        return $this->db->lastInsertId();
     }
 
     /**
@@ -119,6 +120,7 @@ class Session implements SessionInterface
             [$sessionId, $accessToken, $expireTime],
             ['session_id', 'access_token', 'access_token_expires']
         );
+        return $this->db->lastInsertId();
     }
 
     /**
@@ -168,6 +170,7 @@ class Session implements SessionInterface
             [$sessionId, $authCode, $expireTime],
             ['session_id', 'auth_code', 'auth_code_expires']
         );
+        return $this->db->lastInsertId();
     }
 
     /**
