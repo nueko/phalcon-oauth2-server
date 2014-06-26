@@ -18,7 +18,7 @@ php composer.phar require "league/oauth2-server":"3.*" -vvv
 Server Example
 --------------
 ```php
-# add composer autoload on public/index.php
+# add composer autoload on public/index.php, loader.php or wherever you want
 require __DIR__ "/../vendor/autoload.php"
 
 # Config DB
@@ -57,22 +57,24 @@ $app->setService('oauth', function() use ($config) {
    $oauthdb = new Phalcon\Db\Adapter\Pdo\Mysql($config->database->oauth->toArray());
 
     $server = new \League\OAuth2\Server\Authorization(
-        new \Sum\Oauth2\Server\Client($oauthdb),
-        new \Sum\Oauth2\Server\Session($oauthdb),
-        new \Sum\Oauth2\Server\Scope($oauthdb)
+        new \Sum\Oauth2\Server\Storage\Pdo\Mysql\Client($oauthdb),
+        new \Sum\Oauth2\Server\Storage\Pdo\Mysql\Session($oauthdb),
+        new \Sum\Oauth2\Server\Storage\Pdo\Mysql\Scope($oauthdb)
     );
 
     # Not required as it called directly from original code
     # $request = new \League\OAuth2\Server\Util\Request();
     
     # add these 2 lines code if you want to use my own Request otherwise comment it
-    $request = new \Sum\Oauth2\Server\Request(); 
+    $request = new \Sum\Oauth2\Server\Storage\Pdo\Mysql\Request(); 
     $server->setRequest($request);
 
     $server->setAccessTokenTTL(86400);
     $server->addGrantType(new League\OAuth2\Server\Grant\ClientCredentials());
+    return $server;
 });
 
+# should be post, but it is only test 
 $app->get('/access', function () use ($app) {
 	try {
 	    $params = $app->oauth->getParam(array('client_id', 'client_secret'));
