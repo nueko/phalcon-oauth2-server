@@ -71,7 +71,7 @@ class Session implements SessionInterface
     {
         $this->db->delete(
             $this->tables['oauth_sessions'],
-            'client_id = :clientId AND owner_type = :type AND :owner_id = :typeId',
+            'client_id = :clientId AND owner_type = :type AND owner_id = :typeId',
             ['type' => $ownerType, 'typeId' => $ownerId, 'clientId' => $clientId]
         );
     }
