@@ -35,7 +35,7 @@
   },
   "autoload": {
     "psr-0": {
-      "Sum\\Oauth2\\Server\\Storage": "Library/"
+      "Sum\\Oauth2\\Server": "Library/"
     }
   }
 }
