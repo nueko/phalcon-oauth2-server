@@ -160,3 +160,19 @@ Resource Test
 curl "localhost/phalcon/public/bill?token=KKiGP5YURoR41k2iYy82Dp4rFyOxrhJUp9KcdjuK"
 ```
 
+## Support
+
+Bugs and feature request are tracked on [GitHub](https://github.com/sumeko/phalcon-oauth2/issues)
+
+## License
+
+This package is released under the MIT License. See the bundled [LICENSE](https://github.com/sumeko/phalcon-oauth2/blob/master/LICENSE) file for details.
+
+## Credits
+
+This code is principally developed and maintained by [Sumeko](https://github.com/sumeko).
+
+Special thanks to:
+
+* [Torgny Bjers](https://github.com/tbjers)
+
