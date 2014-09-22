@@ -10,6 +10,5 @@ $loader->registerDirs(
         $config->application->modelsDir,
     )
 )->registerNamespaces([
-    'Sumeko' => __DIR__ . '/../src/Sumeko/',
-    'League' => __DIR__ . '/../oauth2-server/src/',
+    'Sumeko' => __DIR__ . '/../src/',
 ])->register();
