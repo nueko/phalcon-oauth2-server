@@ -1,17 +1,34 @@
 <?php
-namespace Sum\Oauth2\Server\Storage\Pdo\Mysql;
+namespace Sumeko\Phalcon\Oauth2\Server;
 
-use League\OAuth2\Server\Util\RequestInterface;
-use Phalcon\Http\Response\Cookies;
+use Phalcon\Mvc\User\Component;
 
-class Request implements RequestInterface
+class IlluminatedRequest extends Component
 {
-
-    public $request;
+    public  $query;
 
     public function __construct()
     {
-        $this->request = new \Phalcon\Http\Request();
+        $this->query = $this->request;
+    }
+    /**
+     * Returns the user.
+     *
+     * @return string|null
+     */
+    public function getUser()
+    {
+        return $this->request->getServer('PHP_AUTH_USER');
+    }
+
+    /**
+     * Returns the password.
+     *
+     * @return string|null
+     */
+    public function getPassword()
+    {
+        return $this->request->getServer('PHP_AUTH_PW');
     }
 
     public function get($index = NULL)
@@ -26,15 +43,13 @@ class Request implements RequestInterface
 
     public function cookie($index = NULL)
     {
-        $cook = new Cookies();
-        return $cook->get($index);
+        return $this->cookies->get($index);
     }
 
     public function file($index = NULL)
     {
-        if (is_null($index))
+        if (is_null($index) && $this->request->hasFiles())
             return $_FILES;
-
         return isset($_FILES[$index]) ? $_FILES[$index] : NULL;
     }
 

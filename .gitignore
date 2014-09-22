@@ -1,0 +1,6 @@
+.idea
+.codeintel
+.DS_STORE
+vendor
+composer.lock
+composer.phar

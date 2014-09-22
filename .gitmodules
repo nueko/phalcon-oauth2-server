@@ -1,0 +1,3 @@
+[submodule "oauth2-server"]
+	path = oauth2-server
+	url = https://github.com/thephpleague/oauth2-server.git
