@@ -1,13 +1,7 @@
 Phalcon-Oauth2
 ==============
 
-Phalcon wrapper for Oauth2 https://github.com/php-loep/oauth2-server
-
-please see:
-> https://github.com/php-loep/oauth2-server/wiki/Developing-an-OAuth-2.0-authorization-server
-
-> https://github.com/php-loep/oauth2-server/wiki/Securing-your-API-with-OAuth-2.0
-
+Phalcon wrapper for Oauth2 https://github.com/thephpleague/oauth2-server
 
 Install
 -------
