@@ -1,5 +1,5 @@
 {
-  "name": "sum/phalcon-oauth2",
+  "name": "sumeko/phalcon-oauth2-server",
   "type": "library",
   "description": "Phalcon wrapper for league/oauth2-server",
   "keywords": [
