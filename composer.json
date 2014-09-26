@@ -16,7 +16,7 @@
     "protect",
     "secure"
   ],
-  "homepage": "https://github.com/sumeko/phalcon-oauth2",
+  "homepage": "https://github.com/sumeko/phalcon-oauth2-server",
   "license": "MIT",
   "authors": [
     {
@@ -35,7 +35,7 @@
   },
   "autoload": {
     "psr-0": {
-      "Sum\\Oauth2\\Server": "Library/"
+      "Sumeko": "src/"
     }
   }
 }
