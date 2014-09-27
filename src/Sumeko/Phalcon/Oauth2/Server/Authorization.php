@@ -9,6 +9,7 @@
 namespace Sumeko\Phalcon\Oauth2\Server;
 
 
+use League\OAuth2\Server\Exception\ClientException;
 use League\OAuth2\Server\Storage\ClientInterface;
 use League\OAuth2\Server\Storage\ScopeInterface;
 use League\OAuth2\Server\Storage\SessionInterface;
@@ -34,4 +35,39 @@ class Authorization extends \League\OAuth2\Server\Authorization
         parent::__construct($client, $session, $scope);
 
     }
+
+    public function getStatusCode($errorType)
+    {
+        return parent::$exceptionHttpStatusCodes[$errorType];
+    }
+
+    /**
+     * Issue an access token
+     *
+     * @param  array $inputParams Optional array of parsed $_POST keys
+     * @throws ClientException
+     * @throws \League\OAuth2\Server\Exception\InvalidGrantTypeException
+     * @return array             Authorise request parameters
+     */
+    public function issueAccessToken($inputParams = [])
+    {
+        if($this->getRequest()->server('REQUEST_METHOD') !== 'POST') {
+            throw new ClientException(sprintf(self::$exceptionMessages['unauthorized_client'], 'grant_type'), 0);
+        }
+        $grantType = $this->getParam('grant_type', 'post', $inputParams);
+
+        if (is_null($grantType)) {
+            throw new ClientException(sprintf(self::$exceptionMessages['invalid_request'], 'grant_type'), 0);
+        }
+
+        // Ensure grant type is one that is recognised and is enabled
+        if ( ! in_array($grantType, array_keys($this->grantTypes))) {
+            throw new ClientException(sprintf(self::$exceptionMessages['unsupported_grant_type'], $grantType), 7);
+        }
+
+        // Complete the flow
+        return $this->getGrantType($grantType)->completeFlow($inputParams);
+    }
+
+
 } 

@@ -16,7 +16,7 @@ class Request implements RequestInterface
 
     public function get($index = NULL)
     {
-        return $this->request->getQuery($index);
+        return $this->request->get($index);
     }
 
     public function post($index = NULL)
