@@ -9,4 +9,3 @@ git clone -b league-4 https://github.com/sumeko/phalcon-oauth2.git ProjectDir
 cd ProjectDir/
 git submodule update --init
 mysql oauth2dev < schema.sql
-```
