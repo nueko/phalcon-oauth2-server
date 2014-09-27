@@ -46,3 +46,9 @@ $di['oauth'] = function () {
     $oauth->enableAllGrants();
     return $oauth;
 };
+
+$di['router'] = function() {
+    $router = new \Phalcon\Mvc\Router();
+    $router->setUriSource(\Phalcon\Mvc\Router::URI_SOURCE_SERVER_REQUEST_URI);
+    return $router;
+};
