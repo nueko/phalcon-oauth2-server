@@ -240,7 +240,7 @@ class Session implements SessionInterface
             AND $oSA.auth_code_expires >= :time
             AND $oSR.redirect_uri = :redirectUri",
             Db::FETCH_ASSOC,
-            ['clientId' => $clientId, 'redirect_uri' => $redirectUri, 'auth_code' => $authCode, 'time' => time()]
+            ['clientId' => $clientId, 'redirectUri' => $redirectUri, 'authCode' => $authCode, 'time' => time()]
         );
 
         if (!empty($row)) {
