@@ -13,72 +13,47 @@ $app->get('/', function () {
 });
 
 $app->get('/resource', function () use ($app) {
-    $server = $app->resource;
-    $response = $app->response;
+    /** @type \Phalcon\OAuth2\Server\Gateway $oauth */
+    $oauth = $app->oauth;
 
-    /** @type \League\OAuth2\Server\ResourceServer $server */
-
-    try {
-        // Check that an access token is present and is valid
-        $server->isValidRequest();
-
-        // A successful response
-        echo "HELLO";
-
-    } catch (\League\OAuth2\Server\Exception\OAuthException $e) {
-
-        // Catch an OAuth exception
-        $response->setStatusCode($e->httpStatusCode);
-        foreach ($e->getHttpHeaders() as $header => $httpHeader) {
-            $response->setHeader($header, $httpHeader);
-        }
-        $response->setJsonContent([
-            'error'     =>  $e->errorType,
-            'message'   =>  $e->getMessage()
-        ]);
-
-
-    } catch (\Phalcon\Http\Request\Exception $e) {
-        // A failed response (thrown by code)
-        $response->setJsonContent(['status_code' => $e->getCode(), 'message' => $e->getMessage()]);
-
-    } catch (\Exception $e) {
-        // Other server error (500)
-        $response->setStatusCode(500);
-        $response->setJsonContent(['status_code' => 500, 'message' => $e->getMessage()]);
-
-    } finally {
-
-        // Return the response
-        $response->send();
-
+    if ($oauth->validateAccessToken()) {
+        echo "\n";
+        echo "Hello, world";
+        echo "\n";
     }
-
 });
 
 $app->post('/token', function () use ($app) {
-    $server = $app->authorization;
+    $oauth = $app->oauth;
 
-    /** @type \League\OAuth2\Server\AuthorizationServer $server */
+    /** @type \Phalcon\OAuth2\Server\Gateway $oauth */
+    $response = $oauth->issueAccessToken();
+    $app->response->setJsonContent($response)
+        ->setHeader('Cache-Control', 'no-store')
+        ->setHeader('Pragma', 'no-store');
 
-    try {
-        $response = $server->issueAccessToken();
-        $app->response->setJsonContent($response)
-            ->setHeader('Cache-Control', 'no-store')
-            ->setHeader('Pragma', 'no-store');
+    $app->response->send();
+});
 
-    } catch (\League\OAuth2\Server\Exception\OAuthException $e) {
-        $app->response->setJsonContent([
-            'error'   => $e->errorType,
-            'message' => $e->getMessage(),
-        ])->setStatusCode($e->httpStatusCode);
+$app->error(function (\Exception $e) use ($app) {
+    if ($e instanceof \League\OAuth2\Server\Exception\OAuthException) {
         foreach ($e->getHttpHeaders() as $key => $header) {
             $app->response->setHeader($key, $header);
         }
 
-    }
-    $app->response->send();
+        $app->response->setJsonContent([
+            'error'   => $e->errorType,
+            'message' => $e->getMessage(),
+        ])->setStatusCode($e->httpStatusCode)->send();
 
+        return false;
+    }
+
+    $app->response
+        ->setStatusCode(500)
+        ->setJsonContent(['status_code' => 500, 'message' => $e->getMessage()]);
+
+    return false;
 });
 
 $app->notFound(function () use ($app) {
