@@ -1,7 +1,8 @@
 <?php
 
-namespace Phalcon\OAuth2\Server\Storage;
+namespace Phalcon\OAuth2\Server\Storage\Phql;
 
+use Phalcon\OAuth2\Server\Component;
 use League\OAuth2\Server\Entity\RefreshTokenEntity;
 use League\OAuth2\Server\Storage\RefreshTokenInterface;
 use Phalcon\OAuth2\Server\Models\RefreshToken;

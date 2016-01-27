@@ -39,10 +39,10 @@ $di->setShared('db', function () use ($config) {
  */
 $di->setShared('resource', function () {
     $server = new \League\OAuth2\Server\ResourceServer(
-        new \Phalcon\OAuth2\Server\Storage\SessionStorage(),
-        new \Phalcon\OAuth2\Server\Storage\AccessTokenStorage(),
-        new \Phalcon\OAuth2\Server\Storage\ClientStorage(),
-        new \Phalcon\OAuth2\Server\Storage\ScopeStorage()
+        new \Phalcon\OAuth2\Server\Storage\Phql\SessionStorage(),
+        new \Phalcon\OAuth2\Server\Storage\Phql\AccessTokenStorage(),
+        new \Phalcon\OAuth2\Server\Storage\Phql\ClientStorage(),
+        new \Phalcon\OAuth2\Server\Storage\Phql\ScopeStorage()
     );
 
     return $server;
@@ -54,10 +54,10 @@ $di->setShared('resource', function () {
 $di->setShared('authorization', function () {
     $server = new \League\OAuth2\Server\AuthorizationServer;
 
-    $server->setSessionStorage(new \Phalcon\OAuth2\Server\Storage\SessionStorage());
-    $server->setAccessTokenStorage(new \Phalcon\OAuth2\Server\Storage\AccessTokenStorage());
-    $server->setClientStorage(new \Phalcon\OAuth2\Server\Storage\ClientStorage());
-    $server->setScopeStorage(new \Phalcon\OAuth2\Server\Storage\ScopeStorage());
+    $server->setSessionStorage(new \Phalcon\OAuth2\Server\Storage\Phql\SessionStorage());
+    $server->setAccessTokenStorage(new \Phalcon\OAuth2\Server\Storage\Phql\AccessTokenStorage());
+    $server->setClientStorage(new \Phalcon\OAuth2\Server\Storage\Phql\ClientStorage());
+    $server->setScopeStorage(new \Phalcon\OAuth2\Server\Storage\Phql\ScopeStorage());
 
     $server->addGrantType(new \League\OAuth2\Server\Grant\ClientCredentialsGrant());
     $server->addGrantType(new \League\OAuth2\Server\Grant\AuthCodeGrant());
