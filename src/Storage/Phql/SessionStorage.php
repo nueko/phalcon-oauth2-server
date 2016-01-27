@@ -2,12 +2,12 @@
 
 namespace Phalcon\OAuth2\Server\Storage\Phql;
 
-use Phalcon\OAuth2\Server\Component;
 use League\OAuth2\Server\Entity\AccessTokenEntity;
 use League\OAuth2\Server\Entity\AuthCodeEntity;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Entity\SessionEntity;
 use League\OAuth2\Server\Storage\SessionInterface;
+use Phalcon\OAuth2\Server\Component;
 use Phalcon\OAuth2\Server\Models\AccessToken;
 use Phalcon\OAuth2\Server\Models\AuthCode;
 use Phalcon\OAuth2\Server\Models\Scope;
@@ -26,12 +26,17 @@ class SessionStorage extends Component implements SessionInterface
      */
     public function get($sessionId)
     {
-        $result = Session::findFirst($sessionId);
+        $result = $this->getBuilder()
+            ->from(Session::class)
+            ->where('id = :id:')
+            ->getQuery()
+            ->getSingleResult(['id' => $sessionId]);
 
-        if (! $result) {
+        if (!$result) {
             return null;
         }
 
+        /** @type Session $result */
         return (new SessionEntity($this->getServer()))
             ->setId($result->id)
             ->setOwner($result->owner_type, $result->owner_id);
@@ -85,7 +90,7 @@ class SessionStorage extends Component implements SessionInterface
 
         foreach ($result as $scope) {
             $scopes[] = (new ScopeEntity($this->getServer()))->hydrate([
-                'id' => $scope->id,
+                'id'          => $scope->id,
                 'description' => $scope->description,
             ]);
         }
@@ -107,11 +112,12 @@ class SessionStorage extends Component implements SessionInterface
     {
         $session = new Session();
         $session->save([
-            'client_id' => $clientId,
-            'owner_type' => $ownerType,
-            'owner_id' => $ownerId,
+            'client_id'           => $clientId,
+            'owner_type'          => $ownerType,
+            'owner_id'            => $ownerId,
             'client_redirect_uri' => $clientRedirectUri,
         ]);
+
         return $session->id;
     }
 
@@ -128,7 +134,7 @@ class SessionStorage extends Component implements SessionInterface
         $sessionScope = new SessionScope();
         $sessionScope->save([
             'session_id' => $session->getId(),
-            'scope_id' => $scope->getId(),
+            'scope_id'   => $scope->getId(),
         ]);
     }
 

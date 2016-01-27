@@ -2,10 +2,10 @@
 
 namespace Phalcon\OAuth2\Server\Storage\Phql;
 
-use Phalcon\OAuth2\Server\Component;
 use League\OAuth2\Server\Entity\AuthCodeEntity;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Storage\AuthCodeInterface;
+use Phalcon\OAuth2\Server\Component;
 use Phalcon\OAuth2\Server\Models\AuthCode;
 use Phalcon\OAuth2\Server\Models\AuthCodeScope;
 use Phalcon\OAuth2\Server\Models\Scope;
@@ -91,9 +91,10 @@ class AuthCodeStorage extends Component implements AuthCodeInterface
      */
     public function delete(AuthCodeEntity $token)
     {
-        if ($auth = AuthCode::findFirst($token->getId())) {
-            $auth->delete();
-        }
+        $this->modelsManager
+            ->executeQuery(
+                "DELETE FROM [" . AuthCode::class . "] WHERE id = :id:", ['id' => $token->getId()]
+            );
     }
 
     /**

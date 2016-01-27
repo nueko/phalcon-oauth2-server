@@ -2,9 +2,9 @@
 
 namespace Phalcon\OAuth2\Server\Storage\Phql;
 
-use Phalcon\OAuth2\Server\Component;
 use League\OAuth2\Server\Entity\RefreshTokenEntity;
 use League\OAuth2\Server\Storage\RefreshTokenInterface;
+use Phalcon\OAuth2\Server\Component;
 use Phalcon\OAuth2\Server\Models\RefreshToken;
 
 /**
@@ -74,8 +74,9 @@ class RefreshTokenStorage extends Component implements RefreshTokenInterface
      */
     public function delete(RefreshTokenEntity $token)
     {
-        if ($token = RefreshToken::findFirst($token->getId())) {
-            $token->delete();
-        }
+        $this->modelsManager
+            ->executeQuery(
+                "DELETE FROM [" . RefreshToken::class . "] WHERE id = :id:", ['id' => $token->getId()]
+            );
     }
 }

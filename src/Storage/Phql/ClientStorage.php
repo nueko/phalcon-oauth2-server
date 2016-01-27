@@ -2,10 +2,10 @@
 
 namespace Phalcon\OAuth2\Server\Storage\Phql;
 
-use Phalcon\OAuth2\Server\Component;
 use League\OAuth2\Server\Entity\ClientEntity;
 use League\OAuth2\Server\Entity\SessionEntity;
 use League\OAuth2\Server\Storage\ClientInterface;
+use Phalcon\OAuth2\Server\Component;
 use Phalcon\OAuth2\Server\Models\Client;
 use Phalcon\OAuth2\Server\Models\ClientEndpoint;
 use Phalcon\OAuth2\Server\Models\ClientGrant;
@@ -133,7 +133,7 @@ class ClientStorage extends Component implements ClientInterface
     /**
      * Hydrate the entity.
      *
-     * @param \Phalcon\Mvc\Model $result
+     * @param mixed $result
      *
      * @return \League\OAuth2\Server\Entity\ClientEntity | null
      */

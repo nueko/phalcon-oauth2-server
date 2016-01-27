@@ -2,10 +2,10 @@
 
 namespace Phalcon\OAuth2\Server\Storage\Phql;
 
-use Phalcon\OAuth2\Server\Component;
 use League\OAuth2\Server\Entity\AccessTokenEntity;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Storage\AccessTokenInterface;
+use Phalcon\OAuth2\Server\Component;
 use Phalcon\OAuth2\Server\Models\AccessToken;
 use Phalcon\OAuth2\Server\Models\AccessTokenScope;
 use Phalcon\OAuth2\Server\Models\Scope;
@@ -119,9 +119,8 @@ class AccessTokenStorage extends Component implements AccessTokenInterface
      */
     public function delete(AccessTokenEntity $token)
     {
-        if ($accessToken = AccessToken::findFirst($token)) {
-            $accessToken->delete();
-        }
+        $this->modelsManager
+            ->executeQuery("DELETE FROM [" . AccessToken::class . "] WHERE id = :id:", ['id' => $token->getId()]);
     }
 
 }
