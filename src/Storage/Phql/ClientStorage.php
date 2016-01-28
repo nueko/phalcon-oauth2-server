@@ -76,7 +76,6 @@ class ClientStorage extends Component implements ClientInterface
         if ($redirectUri) {
             $columns[] = 'e.redirect_uri';
 
-            $sql->join(ClientEndpoint::class, 'c.id = e.client_id', 'e');
             $sql->join(ClientEndpoint::class, 'c.id = e.client_id', 'e')
                 ->andWhere('e.redirect_uri = :uri:', ['uri' => $redirectUri]);
         }
