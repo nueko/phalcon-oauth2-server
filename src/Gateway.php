@@ -9,6 +9,7 @@ use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\TokenType\TokenTypeInterface;
 use League\OAuth2\Server\Util\RedirectUri;
 use Phalcon\OAuth2\Server\Storage\Phql\AccessTokenStorage;
+use Phalcon\OAuth2\Server\Storage\Phql\AuthCodeStorage;
 use Phalcon\OAuth2\Server\Storage\Phql\ClientStorage;
 use Phalcon\OAuth2\Server\Storage\Phql\ScopeStorage;
 use Phalcon\OAuth2\Server\Storage\Phql\SessionStorage;
@@ -65,12 +66,14 @@ class Gateway extends Component
         $accessToken = new AccessTokenStorage();
         $client = new ClientStorage();
         $scope = new ScopeStorage();
+        $authCode = new AuthCodeStorage();
         $authorization = new AuthorizationServer;
 
         $authorization->setSessionStorage($session);
         $authorization->setAccessTokenStorage($accessToken);
         $authorization->setClientStorage($client);
         $authorization->setScopeStorage($scope);
+        $authorization->setAuthCodeStorage($authCode);
 
         foreach ($grants as $grant) {
             $authorization->addGrantType($grant);

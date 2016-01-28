@@ -3,7 +3,6 @@
 namespace Phalcon\OAuth2\Server;
 
 use Phalcon\Mvc\User\Component as PhalconComponent;
-use Phalcon\OAuth2\Server\Storage;
 
 /**
  * Class Plugin
