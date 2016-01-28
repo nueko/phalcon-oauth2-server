@@ -59,7 +59,7 @@ class Gateway extends Component
     }
 
 
-    public static function phqlStorage(array $grants = ['client_credentials'], $refreshToken = false)
+    public static function phqlStorage(array $grants = [], $refreshToken = false)
     {
         $session = new SessionStorage();
         $accessToken = new AccessTokenStorage();
@@ -73,8 +73,7 @@ class Gateway extends Component
         $authorization->setScopeStorage($scope);
 
         foreach ($grants as $grant) {
-            $class = 'League\OAuth2\Server\Grant\\' . Text::camelize($grant) . "Grant";
-            $authorization->addGrantType(new $class);
+            $authorization->addGrantType($grant);
         }
 
         if ($refreshToken) {

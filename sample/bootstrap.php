@@ -37,7 +37,11 @@ $di->setShared('db', function () use ($config) {
 /**
  * OAuth2 Server Service
  */
-$di->setShared('oauth', \Phalcon\OAuth2\Server\Gateway::phqlStorage());
+$di->setShared('oauth', \Phalcon\OAuth2\Server\Gateway::phqlStorage([
+    new \League\OAuth2\Server\Grant\ClientCredentialsGrant(),
+    new \League\OAuth2\Server\Grant\AuthCodeGrant(),
+    new \League\OAuth2\Server\Grant\PasswordGrant()
+]));
 
 /**
  * Starting the application

@@ -1,11 +1,6 @@
 <?php
 
 /**
- * Local variables
- * @var \Phalcon\Mvc\Micro $app
- */
-
-/**
  * Add your routes here
  */
 $app->get('/', function () {
