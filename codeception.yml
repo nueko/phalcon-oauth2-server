@@ -7,9 +7,8 @@ paths:
     envs: tests/_envs
 settings:
     bootstrap: _bootstrap.php
-    colors: true
+    colors: false
     memory_limit: 1024M
-    log: true
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
@@ -20,5 +19,3 @@ modules:
             user: ''
             password: ''
             dump: tests/_data/dump.sql
-
-error_level: "E_ALL | E_STRICT"
