@@ -8,5 +8,3 @@ tests/_output/*
 tests/_support/_generated/*.php
 selenium-server-standalone-*.jar
 chromedriver
-tests/_output/*
-tests/_output/*
